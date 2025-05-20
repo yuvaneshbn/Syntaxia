@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --highlight-color: #e74c3c;
+      --dark-bg: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f5f5f5;
+      --secondary-text: #b3b3b3;
+      --event-type1-color: #2ecc71; /* Green for first event type */
+      --event-type2-color: #3498db; /* Blue for second event type */
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('bg pattern 2.png'); /* Replace with your image URL */
+      background-size: cover;
+      background-position: center;
+      z-index: -1; /* Keeps it behind other elements */
+    }
+
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      margin-top: 77px;
+    }
+    @media screen and (max-width: 600px) {
+      .container {
+        margin-top: 0;
+      }
+      
+    }
+    
+    .events-header {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .events-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .events-header p {
+      color: var(--secondary-text);
+      font-size: 1.1rem;
+    }
+    
+    .about-section {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 0 auto 40px auto;
+      max-width: 900px;
+    }
+    
+    .about-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .event-types {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .event-type {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .color-indicator {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+    }
+    
+    .type1 {
+      background-color: var(--event-type1-color);
+    }
+    
+    .type2 {
+      background-color: var(--event-type2-color);
+    }
+    
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .event-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .event-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(231, 76, 60, 0.2);
+    }
+    
+    .event-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background-color: var(--highlight-color);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s ease;
+    }
+    
+    .event-card:hover:before {
+      transform: scaleY(1);
+    }
+    
+    .event-card.type1:before {
+      background-color: var(--event-type1-color);
+    }
+    
+    .event-card.type2:before {
+      background-color: var(--event-type2-color);
+    }
+    
+    .event-type-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      z-index: 2;
+      color: white;
+    }
+    
+    .event-type-badge.type1 {
+      background-color: var(--event-type1-color);
+    }
+    
+    .event-type-badge.type2 {
+      background-color: var(--event-type2-color);
+    }
+    
+    .event-image {
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+    }
+    
+    .event-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .event-card:hover .event-image img {
+      transform: scale(1.1);
+    }
+    
+    .event-details {
+      padding: 20px;
+    }
+    
+    .event-date {
+      display: inline-block;
+      background-color: var(--highlight-color);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+    
+    .event-title {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .event-location {
+      display: flex;
+      align-items: center;
+      color: var(--secondary-text);
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+    
+    .event-location i {
+      margin-right: 10px;
+    }
+    
+    .event-brief {
+      color: var(--secondary-text);
+      margin-bottom: 15px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .event-seats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    
+    .register-btn {
+      background-color: transparent;
+      color: var(--highlight-color);
+      border: 1px solid var(--highlight-color);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .register-btn:hover {
+      background-color: var(--highlight-color);
+      color: white;
+    }
+    
+    .event-card.type1 .register-btn {
+      color: var(--event-type1-color);
+      border-color: var(--event-type1-color);
+    }
+    
+    .event-card.type1 .register-btn:hover {
+      background-color: var(--event-type1-color);
+      color: white;
+    }
+    
+    .event-card.type2 .register-btn {
+      color: var(--event-type2-color);
+      border-color: var(--event-type2-color);
+    }
+    
+    .event-card.type2 .register-btn:hover {
+      background-color: var(--event-type2-color);
+      color: white;
+    }
+    
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      padding: 20px;
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background-color: var(--card-bg);
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+      opacity: 1;
+    }
+    
+    .modal-header {
+      position: relative;
+      height: 200px;
+    }
+    
+    .modal-header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .modal-event-type {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      padding: 5px 15px;
+      border-radius: 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    
+    .modal-event-type.type1 {
+      background-color: var(--event-type1-color);
+    }
+    
+    .modal-event-type.type2 {
+      background-color: var(--event-type2-color);
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      z-index: 10;
+      transition: background-color 0.3s ease;
+    }
+    
+    .close-modal:hover {
+      background-color: var(--highlight-color);
+    }
+    
+    .modal-body {
+      padding: 25px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    
+    .modal-title {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--text-color);
+    }
+    
+    .modal-metadata {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .metadata-item {
+      display: flex;
+      align-items: center;
+      color: var(--secondary-text);
+      font-size: 0.9rem;
+    }
+    
+    .metadata-item i {
+      margin-right: 8px;
+      color: var(--highlight-color);
+    }
+    
+    .modal-description {
+      margin-bottom: 25px;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+    
+    .modal-columns {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    
+    .info-column h3 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: var(--highlight-color);
+    }
+    
+    .info-item {
+      display: flex;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+    
+    .info-icon {
+      margin-right: 10px;
+      color: var(--highlight-color);
+      min-width: 20px;
+      text-align: center;
+    }
+    
+    .info-text {
+      color: var(--secondary-text);
+    }
+    
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+    
+    .modal-price {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    
+    .modal-register {
+      background-color: var(--highlight-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    
+    .modal-register:hover {
+      background-color: #c0392b;
+      transform: translateY(-3px);
+    }
+    
+    .modal-register.type1 {
+      background-color: var(--event-type1-color);
+    }
+    
+    .modal-register.type1:hover {
+      background-color: #27ae60;
+    }
+    
+    .modal-register.type2 {
+      background-color: var(--event-type2-color);
+    }
+    
+    .modal-register.type2:hover {
+      background-color: #2980b9;
+    }
+
+    /*nav bar */
+
+    .navbar {
+    display: flex;
+    justify-content: center;
+    font-family: 'Itim', sans-serif;
+    gap: 15px;
+    padding: 14px 28px;
+    background: rgb(0, 0, 0);
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    z-index: 1000;
+  }
+
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 16px;
+    transition: all 0.3s;
+  }
+
+  .navbar a:hover {
+    color: rgb(33, 33, 152);
+  }
+
+  /* Hamburger menu icon */
+  .hamburger-icon {
+    display: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .bar1, .bar2, .bar3 {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    transition: 0.4s;
+  }
+
+  /* Rotate hamburger icon when active */
+  .change .bar1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .change .bar2 {
+    opacity: 0;
+  }
+
+  .change .bar3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-menu.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  .mobile-menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .mobile-menu-content a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    margin: 15px 0;
+    padding: 10px;
+    transition: all 0.3s;
+  }
+
+  .mobile-menu-content a:hover {
+    color: rgb(33, 33, 152);
+  }
+
+  /* Media queries */
+  @media (max-width: 768px) {
+    .navbar a {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .desktop-menu {
+      display: none;
+    }
+    
+    .hamburger-icon {
+      display: block;
+    }
+
+    .navbar {
+      justify-content: center;
+      gap: 10px;
+      padding: 8px 15px;
+      left: 12%;
+    }
+  }
+
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .events-header h1 {
+        font-size: 2rem;
+      }
+      
+      .events-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+      
+      .modal-columns {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .modal-header {
+        height: 180px;
+      }
+      
+      .modal-title {
+        font-size: 1.4rem;
+      }
+      
+      .modal-body {
+        padding: 20px;
+      }
+      
+      .modal-footer {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .events-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .modal-metadata {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .modal-content {
+        max-height: 90vh;
+      }
+      
+      .modal-header {
+        height: 150px;
+      }
+    }
+
+    /* Animation keyframes */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    /* Apply animations */
+    .event-card {
+      animation: fadeIn 0.5s ease backwards;
+    }
+    
+    .events-grid .event-card:nth-child(1) { animation-delay: 0.1s; }
+    .events-grid .event-card:nth-child(2) { animation-delay: 0.2s; }
+    .events-grid .event-card:nth-child(3) { animation-delay: 0.3s; }
+    .events-grid .event-card:nth-child(4) { animation-delay: 0.4s; }
+    .events-grid .event-card:nth-child(5) { animation-delay: 0.5s; }
+    .events-grid .event-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .modal-body {
+      animation: slideUp 0.5s ease;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+  <div class="background-image"></div>  
+
+
+  <div class="navbar">
+    <div class="desktop-menu">
+      <a class="underline-fx" href="home.html">Home</a>
+      <a class="underline-fx" href="cards.html">About</a>
+      <a class="underline-fx" href="events.html">Events</a>
+      <a class="underline-fx" href="register.html">Register now</a>
+    </div>
+    
+    <div class="hamburger-icon">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+  </div>
+  
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <a href="home.html">Home</a>
+      <a href="cards.html">About</a>
+      <a href="events.html">Events</a>
+      <a href="register.html">Register now</a>
+    </div>
+  </div>
+
+
+
+  <div class="container">
+    <div class="events-header">
+    </div>
+    
+    <div class="about-section">
+      <h2>About Our Events</h2>
+      <p>We are excited to host two major events at our college this season. Each event has multiple sub-events that you can participate in. Choose from our technical festival "Syntaxia" with programming competitions and workshops, or our cultural festival "ArtBeat" with music, dance, and theatrical performances.</p>
+      
+      <div class="event-types">
+        <div class="event-type">
+          <div class="color-indicator type1"></div>
+          <span>Syntaxia - Technical Festival</span>
+        </div>
+        <div class="event-type">
+          <div class="color-indicator type2"></div>
+          <span>Technophite - Cultural Festival</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="events-grid">
+      <!-- Event Card 1 - Technical -->
+      <div class="event-card type1" data-event-id="1">
+        <div class="event-type-badge type1">Syntaxia</div>
+        <div class="event-image">
+          <img src="https://static.vecteezy.com/system/resources/thumbnails/041/388/388/small/ai-generated-concert-crowd-enjoying-live-music-event-photo.jpg" alt="Hackathon">
+        </div>
+        <div class="event-details">
+          <span class="event-date">Apr 15, 2025</span>
+          <h2 class="event-title">24-Hour Hackathon</h2>
+          <div class="event-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Engineering Block, Campus</span>
+          </div>
+          <p class="event-brief">Challenge yourself in this intensive coding competition. Build innovative solutions to real-world problems and win exciting prizes.</p>
+          <div class="event-seats">
+            <button class="register-btn">View Details</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event Card 2 - Technical -->
+      <div class="event-card type1" data-event-id="2">
+        <div class="event-type-badge type1">Syntaxia</div>
+        <div class="event-image">
+          <img src="/api/placeholder/600/400" alt="Tech Workshops">
+        </div>
+        <div class="event-details">
+          <span class="event-date">Apr 16, 2025</span>
+          <h2 class="event-title">Tech Workshops Series</h2>
+          <div class="event-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Computer Science Dept.</span>
+          </div>
+          <p class="event-brief">Learn cutting-edge technologies from industry experts. Workshops on AI, blockchain, cybersecurity, and more.</p>
+          <div class="event-seats">
+            <button class="register-btn">View Details</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event Card 3 - Cultural -->
+      <div class="event-card type2" data-event-id="3">
+        <div class="event-type-badge type2">Technophite</div>
+        <div class="event-image">
+          <img src="/api/placeholder/600/400" alt="Music Competition">
+        </div>
+        <div class="event-details">
+          <span class="event-date">Apr 22, 2025</span>
+          <h2 class="event-title">Battle of Bands</h2>
+          <div class="event-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>College Auditorium</span>
+          </div>
+          <p class="event-brief">Showcase your musical talent in this high-energy competition. Solo performances and band categories available.</p>
+          <div class="event-seats">
+            <button class="register-btn">View Details</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event Card 4 - Cultural -->
+      <div class="event-card type2" data-event-id="4">
+        <div class="event-type-badge type2">Technophite</div>
+        <div class="event-image">
+          <img src="/api/placeholder/600/400" alt="Dance Competition">
+        </div>
+        <div class="event-details">
+          <span class="event-date">Apr 23, 2025</span>
+          <h2 class="event-title">Choreography Challenge</h2>
+          <div class="event-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Open Air Theater</span>
+          </div>
+          <p class="event-brief">Express yourself through dance. Solo, duet, and group categories with diverse dance styles welcome.</p>
+          <div class="event-seats">
+            <button class="register-btn">View Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal Template -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img src="/api/placeholder/1200/600" alt="Event Image">
+        <div class="modal-event-type">Event Type</div>
+        <div class="close-modal">&times;</div>
+      </div>
+      <div class="modal-body">
+        <h2 class="modal-title">Event Title</h2>
+        
+        <div class="modal-metadata">
+          <div class="metadata-item">
+            <i class="far fa-calendar"></i>
+            <span id="modal-date">Date</span>
+          </div>
+          <div class="metadata-item">
+            <i class="far fa-clock"></i>
+            <span id="modal-time">Time</span>
+          </div>
+          <div class="metadata-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span id="modal-location">Location</span>
+          </div>
+        </div>
+        
+        <div class="modal-description" id="modal-description">
+          Description will be loaded here
+        </div>
+        
+        <div class="modal-columns">
+          <div class="info-column">
+            <h3>Event Details</h3>
+            <div class="info-item">
+              <div class="info-icon"><i class="fas fa-users"></i></div>
+              <div class="info-text" id="modal-attendees">Expected attendees</div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><i class="fas fa-utensils"></i></div>
+              <div class="info-text" id="modal-refreshments">Refreshments</div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><i class="fas fa-trophy"></i></div>
+              <div class="info-text" id="modal-prizes">Prizes</div>
+            </div>
+          </div>
+          
+          <div class="info-column">
+            <h3>Participation Info</h3>
+            <div class="info-item">
+              <div class="info-icon"><i class="fas fa-user-friends"></i></div>
+              <div class="info-text" id="modal-team-size">Team size</div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><i class="fas fa-id-card"></i></div>
+              <div class="info-text" id="modal-eligibility">Eligibility</div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><i class="fas fa-laptop"></i></div>
+              <div class="info-text" id="modal-requirements">Requirements</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <div class="modal-price" id="modal-price">$0</div>
+          <button class="modal-register">Register Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Event data with color coding but simplified
+    /*
+    const eventsData = [
+      {
+        id: 1,
+        title: "24-Hour Hackathon",
+        type: "type1", // Syntaxia event
+        typeName: "Syntaxia",
+        date: "April 15, 2025",
+        time: "10:00 AM - April 16, 10:00 AM",
+        location: "Engineering Block, Central Campus",
+        description: "Challenge yourself in this intensive 24-hour coding competition. Teams will collaborate to build innovative solutions to real-world problems presented by industry partners. Our hackathon focuses on creating applications that address social challenges, environmental issues, or educational needs. Mentors from leading tech companies will be available throughout the event to provide guidance and support. This is your chance to showcase your creativity, technical skills, and teamwork while competing for exciting prizes.",
+        image: "https://static.vecteezy.com/system/resources/thumbnails/041/388/388/small/ai-generated-concert-crowd-enjoying-live-music-event-photo.jpg",
+        attendees: "150+ participants (50 teams)",
+        refreshments: "Meals, snacks, and beverages provided",
+        prizes: "₹50,000 first prize, internship opportunities",
+        teamSize: "3-4 members per team",
+        eligibility: "Open to all college students",
+        requirements: "Laptops, student ID required",
+        price: "₹1000 per team",
+        seatsLeft: 32
+      },
+      {
+        id: 3,
+        title: "Battle of Bands",
+        type: "type2", // ArtBeat event
+        typeName: "Technophite",
+        date: "April 22, 2025",
+        time: "5:00 PM - 9:00 PM",
+        location: "College Auditorium, Main Campus",
+        description: "Showcase your musical talent in this high-energy competition. Whether you're a solo artist or part of a band, this is your opportunity to perform on stage and compete for recognition. Genres ranging from rock, pop, folk, fusion, and classical are welcome. Each performance will be judged on technical skill, originality, stage presence, and audience engagement. The event will conclude with performances from guest artists and award announcements.",
+        image: "/api/placeholder/1200/600",
+        attendees: "400+ audience members",
+        refreshments: "Snacks and beverages available for purchase",
+        prizes: "₹25,000 first prize, recording opportunity",
+        teamSize: "Solo or band (max 6 members)",
+        eligibility: "Open to all college students",
+        requirements: "Instruments, backing tracks if needed",
+        price: "₹500 per solo entry, ₹1000 per band",
+        seatsLeft: 10
+      },
+
+    ];
+*/
+
+let eventsData = [];
+
+// Fetch events from the server
+fetch('fetch_events.php')
+  .then(response => response.json())
+  .then(data => {
+    if (!Array.isArray(data)) {
+      throw new Error('Invalid data format received');
+    }
+
+    // Format the data properly
+    eventsData = data.map(event => ({
+      id: Number(event.id) || 0,  // Ensure ID is a number
+      title: event.title || "Untitled Event",
+      type: event.type || "general",
+      typeName: event.type_name || "General",
+      date: event.date || "TBA",
+      time: event.time || "TBA",
+      location: event.location || "Venue not specified",
+      description: event.description || "No description available.",
+      image: event.image_url || "default.jpg",
+      attendees: event.attendees || "N/A",
+      refreshments: event.refreshments || "Not specified",
+      prizes: event.prizes || "No prizes listed",
+      teamSize: event.team_size || "N/A",
+      eligibility: event.eligibility || "Open to all",
+      requirements: event.requirements || "No special requirements",
+      price: event.price || "Free",
+      seatsLeft: Number(event.seats_left) || 0  // Ensure valid number
+    }));
+
+    populateEventsGrid();
+  })
+  .catch(error => {
+    console.error('Error fetching events:', error);
+    document.querySelector('.events-grid').innerHTML = `
+      <div class="col-12">
+        <div style="padding: 20px; background-color: rgba(255,0,0,0.1); border-radius: 10px; text-align: center;">
+          <h3>Error Loading Events</h3>
+          <p>There was a problem loading the events. Please try again later.</p>
+        </div>
+      </div>
+    `;
+  });
+
+function populateEventsGrid() {
+  const eventsGrid = document.querySelector('.events-grid');
+  eventsGrid.innerHTML = '';
+
+  if (eventsData.length === 0) {
+    eventsGrid.innerHTML = `
+      <div class="col-12">
+        <div style="padding: 20px; background-color: rgba(0,0,0,0.1); border-radius: 10px; text-align: center;">
+          <h3>No Events Available</h3>
+          <p>Check back later for upcoming events.</p>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  eventsData.forEach(event => {
+    const eventCard = document.createElement('div');
+    eventCard.className = `event-card ${event.type}`;
+    eventCard.dataset.eventId = event.id;
+
+    eventCard.innerHTML = `
+      <div class="event-type-badge ${event.type}">${event.typeName}</div>
+      <div class="event-image">
+        <img src="${event.image}" alt="${event.title}">
+      </div>
+      <div class="event-details">
+        <span class="event-date">${event.date} ${event.time ? `at ${event.time}` : ''}</span>
+        <h2 class="event-title">${event.title}</h2>
+        <div class="event-location">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>${event.location}</span>
+        </div>
+        <p class="event-brief">${event.description}</p>
+        <div class="event-seats">
+          <span class="seats-left">${event.seatsLeft} ${event.seatsLeft === 1 ? 'slot' : 'slots'} left</span>
+          <button class="register-btn">View Details</button>
+        </div>
+      </div>
+    `;
+
+    eventsGrid.appendChild(eventCard);
+
+    // Add event listener for event details
+    eventCard.addEventListener('click', () => {
+      showEventDetails(event);
+    });
+  });
+}
+
+
+    // DOM Elements
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const modalContent = document.querySelector('.modal-content');
+    const closeModal = document.querySelector('.close-modal');
+    const eventCards = document.querySelectorAll('.event-card');
+
+    // Event Listeners
+    eventCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const eventId = parseInt(card.dataset.eventId);
+        const eventData = eventsData.find(event => event.id === eventId);
+        if (eventData) {
+          showEventDetails(eventData);
+        }
+      });
+    });
+
+    closeModal.addEventListener('click', hideModal);
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        hideModal();
+      }
+    });
+
+    // Functions
+    function showEventDetails(event) {
+      document.querySelector('.modal-event-type').textContent = event.typeName;
+      document.querySelector('.modal-event-type').className = `modal-event-type ${event.type}`;
+      document.querySelector('.modal-title').textContent = event.title;
+      document.querySelector('#modal-date').textContent = event.date;
+      document.querySelector('#modal-time').textContent = event.time;
+      document.querySelector('#modal-location').textContent = event.location;
+      document.querySelector('#modal-description').textContent = event.description;
+      document.querySelector('#modal-description').textContent = event.description;
+      document.querySelector('#modal-attendees').textContent = event.attendees;
+      document.querySelector('#modal-refreshments').textContent = event.refreshments;
+      document.querySelector('#modal-prizes').textContent = event.prizes;
+      document.querySelector('#modal-team-size').textContent = event.teamSize;
+      document.querySelector('#modal-eligibility').textContent = event.eligibility;
+      document.querySelector('#modal-requirements').textContent = event.requirements;
+      document.querySelector('#modal-price').textContent = event.price;
+      
+      const modalRegisterBtn = document.querySelector('.modal-register');
+      modalRegisterBtn.className = `modal-register ${event.type}`;
+      
+      document.querySelector('.modal-header img').src = event.image;
+      document.querySelector('.modal-header img').alt = event.title;
+      
+      modalOverlay.classList.add('active');
+      
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function hideModal() {
+      modalOverlay.classList.remove('active');
+      
+      document.body.style.overflow = '';
+      
+      setTimeout(() => {
+        document.querySelector('.modal-title').textContent = 'Event Title';
+        document.querySelector('#modal-description').textContent = 'Description will be loaded here';
+      }, 500);
+    }
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+        hideModal();
+      }
+    });
+    
+    // Add registration functionality
+    document.querySelector('.modal-register').addEventListener('click', function() {
+      const eventTitle = document.querySelector('.modal-title').textContent;
+      alert(`Thank you for your interest in "${eventTitle}"! Registration form will open in a new tab.`);
+      // In a real application, this would redirect to a registration form or open it in the modal
+    });
+  </script>
+</body>
+</html>

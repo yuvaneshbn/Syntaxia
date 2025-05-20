@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECHNOPHITE Association</title>
+    <style>
+        /* Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            line-height: 1.6;
+            /* No background - will be on a black image */
+            background-color: transparent;
+        }
+        
+        /* Removed container to fit into existing webpage */
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+            background: transparent;
+        }
+        
+        section {
+            background: transparent;
+            padding: 30px 0;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 1.05em;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Special highlight elements with cursor following effect */
+        .highlight {
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+            color: #7af5ff;
+            cursor: pointer;
+            transition: color 0.5s ease;
+            z-index: 1;
+        }
+        
+        .highlight:hover {
+            color: #ff55bb;
+        }
+        
+        /* Register Now tooltip that follows cursor */
+        .tooltip {
+            position: fixed;
+            background: transparent;
+            color: #ff55bb;
+            font-weight: bold;
+            font-size: 0.9em;
+            padding: 5px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            transform: translate(-50%, -150%);
+            text-shadow: 0 0 8px rgba(255, 85, 187, 0.6);
+            z-index: 1000;
+            letter-spacing: 1px;
+        }
+        
+        /* Adjust list styles for dark background */
+        ul {
+            list-style-type: none;
+            margin-left: 10px;
+        }
+        
+        li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+        
+        li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background: #7af5ff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(122, 245, 255, 0.8);
+            transition: transform 0.3s ease;
+        }
+        
+        li:hover::before {
+            transform: scale(1.5);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #ccc;
+            font-size: 0.9em;
+            background: transparent;
+        }
+        
+        .glow {
+            text-shadow: 0 0 10px rgba(122, 245, 255, 0.5);
+            transition: text-shadow 0.5s ease;
+        }
+        
+        .glow:hover {
+            text-shadow: 0 0 15px rgba(255, 85, 187, 0.8);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><span class="highlight" data-text="REGISTER NOW">TECHNOPHITE</span></h1>
+        <p>Department of Computer Science (PG)</p>
+    </header>
+    
+    <section>
+        <p>
+            <span class="highlight" data-text="REGISTER NOW">TECHNOPHITE</span> is an association founded by the Department of Computer Science (PG). It comprises of a team of passionate and organized youth who are interested in expanding their knowledge as well as their skills. The objective of the Technophite association is to widen the perspectives of Josephite's and to provide a platform for students to discuss, share and update their knowledge in various domains of information technology thereby encouraging them to undertake a multitude of curricular as well as extracurricular activities.
+        </p>
+    </section>
+    
+    <section>
+        <h2 class="glow">Vision</h2>
+        <p>To actively organize and engage in various events that will update the students of the college with the plethora of technological advancements that transpire in ways that are fun and rewarding.</p>
+    </section>
+    
+    <section>
+        <h2 class="glow">Mission</h2>
+        <p>To engage and connect the postgraduate computer science students of our college and the ones across institutions all over India by active participation with in this community and to attend events, to volunteer, to learn, to grow and to contribute to the greatness of our institution.</p>
+        <p>The students are guided in the right direction and encouraged to participate, organize and be a part of various events such as:</p>
+    </section>
+    
+    <section>
+        <h2 class="glow">Inter collegiate fest</h2>
+        <p>An inter-collegiate fest "<span class="highlight" data-text="REGISTER NOW">SYNTAXIA</span>" is organized by the first and second year post graduate students. The fest included both on-stage as well as off-stage events that helped students to showcase their skills and their talents.</p>
+    </section>
+    
+    <footer>
+        &copy; 2025 TECHNOPHITE Association | Department of Computer Science (PG)
+    </footer>
+    
+    <div class="tooltip" id="tooltip">REGISTER NOW</div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tooltip = document.getElementById('tooltip');
+            const highlights = document.querySelectorAll('.highlight');
+            
+            highlights.forEach(highlight => {
+                highlight.addEventListener('mousemove', function(e) {
+                    tooltip.style.left = e.clientX + 'px';
+                    tooltip.style.top = e.clientY + 'px';
+                    tooltip.style.opacity = '1';
+                    
+                    tooltip.style.transform = `translate(-50%, -150%) scale(${1 + Math.sin(Date.now() / 300) * 0.1})`;
+                });
+                
+                highlight.addEventListener('mouseenter', function() {
+                    tooltip.style.opacity = '1';
+                    
+                    this.style.textShadow = '0 0 10px rgba(255, 85, 187, 0.8)';
+                    
+                    this.style.animation = 'pulse 2s infinite ease-in-out';
+                });
+                
+                highlight.addEventListener('mouseleave', function() {
+                    tooltip.style.opacity = '0';
+                    this.style.textShadow = 'none';
+                    this.style.animation = 'none';
+                });
+            });
+            
+            const sections = document.querySelectorAll('section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                
+                setTimeout(() => {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, 200 * (index + 1));
+            });
+        });
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { opacity: 1; }
+                50% { opacity: 0.8; }
+                100% { opacity: 1; }
+            }
+            
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --syntaxia-color: #00c2ff;
+            --technophite-color: #ff5722;
+            --card-bg: rgba(30, 30, 30, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --accent: #7b1fa2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 0;
+            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            max-width: calc(100% - 320px);
+        }
+
+        .sidebar {
+            width: 320px;
+            background-color: rgba(20, 20, 20, 0.95);
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-top: 46px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--syntaxia-color), var(--technophite-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .events-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--text-primary);
+            text-decoration: none;
+            background-color: var(--accent);
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .events-link:hover {
+            background-color: #9c27b0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .registration-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .registration-section {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .event-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+
+        .syntaxia-card::before {
+            background-color: var(--syntaxia-color);
+        }
+
+        .technophite-card::before {
+            background-color: var(--technophite-color);
+        }
+
+        .event-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .syntaxia-title {
+            color: var(--syntaxia-color);
+        }
+
+        .technophite-title {
+            color: var(--technophite-color);
+        }
+
+        .event-info {
+            margin-bottom: 20px;
+        }
+
+        .registration-options {
+            margin-top: 20px;
+        }
+
+        .option-card {
+            background-color: rgba(50, 50, 50, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .option-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .option-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .price {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .sidebar-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--text-primary);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .qr-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #333;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 1px dashed #555;
+        }
+
+        .upi-id {
+            font-family: monospace;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 10px;
+            user-select: all;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .important-note {
+            background-color: rgba(255, 87, 34, 0.2);
+            border-left: 4px solid var(--technophite-color);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .note-title {
+            color: var(--technophite-color);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-button:hover {
+            background-color: #9c27b0;
+        }
+
+        .payment-steps {
+            margin-bottom: 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            background-color: var(--accent);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+
+        .step-content {
+            flex-grow: 1;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .navbar {
+  display: flex;
+  justify-content: center;
+  font-family: 'Itim', sans-serif;
+  gap: 15px;
+  padding: 14px 28px;
+  background: rgb(0, 0, 0);
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 20px;
+  z-index: 1000;
+}
+
+
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 16px;
+    transition: all 0.3s;
+  }
+
+  .navbar a:hover {
+    color: rgb(33, 33, 152);
+  }
+
+  /* Hamburger menu icon */
+  .hamburger-icon {
+    display: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .bar1, .bar2, .bar3 {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    transition: 0.4s;
+  }
+
+  /* Rotate hamburger icon when active */
+  .change .bar1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .change .bar2 {
+    opacity: 0;
+  }
+
+  .change .bar3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-menu.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  .mobile-menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .mobile-menu-content a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    margin: 15px 0;
+    padding: 10px;
+    transition: all 0.3s;
+  }
+
+  .mobile-menu-content a:hover {
+    color: rgb(33, 33, 152);
+  }
+
+    
+    /* Make option cards clickable */
+    .option-card {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .option-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Form Overlay Styles */
+    .form-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.85);
+        z-index: 2000;
+        overflow-y: auto;
+        padding: 20px;
+    }
+    
+    .form-container {
+        background-color: var(--card-bg);
+        max-width: 600px;
+        margin: 30px auto;
+        border-radius: 10px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+    }
+    
+    .form-header {
+        background: linear-gradient(90deg, var(--syntaxia-color), var(--technophite-color));
+        padding: 20px;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .form-header h2 {
+        margin: 0;
+    }
+    
+    .close-form {
+        font-size: 28px;
+        cursor: pointer;
+    }
+    
+    #registrationForm {
+        padding: 30px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 5px;
+        border: 1px solid #444;
+        background-color: rgba(30, 30, 30, 0.7);
+        color: var(--text-primary);
+        font-size: 16px;
+    }
+    
+    .form-group input[type="file"] {
+        padding: 8px;
+    }
+    
+    .form-summary {
+        background-color: rgba(50, 50, 50, 0.5);
+        padding: 15px;
+        border-radius: 5px;
+        margin: 20px 0;
+    }
+    
+    .form-summary p {
+        margin: 5px 0;
+    }
+    
+    .submit-button {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background-color: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .submit-button:hover {
+        background-color: #9c27b0;
+    }
+    .underline-fx {
+  color: darkblue;
+  text-decoration: none;
+  background-image: linear-gradient(to right, darkblue 50%, rgb(0, 0, 0) 50%);
+  background-size: 200% 3px;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  transition: background-position .3s;
+}
+
+.underline-fx:hover {
+  background-position: 0% 100%;
+}
+    
+    /* Responsive form adjustments */
+    @media (max-width: 768px) {
+        .form-container {
+            margin: 10px auto;
+        }
+        
+        #registrationForm {
+            padding: 20px;
+        }
+    }
+
+
+  /* Media queries */
+  @media (max-width: 768px) {
+    .navbar a {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .desktop-menu {
+      display: none;
+    }
+    
+    .hamburger-icon {
+      display: block;
+    }
+
+    .navbar {
+      justify-content: center;
+      gap: 10px;
+      padding: 8px 15px;
+      left: 12%;
+    }
+  }
+  .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('bg pattern 2.png'); /* Replace with your image URL */
+      background-size: cover;
+      background-position: center;
+      z-index: -1; /* Keeps it behind other elements */
+    }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(123, 31, 162, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(123, 31, 162, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(123, 31, 162, 0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 950px) {
+            body {
+                flex-direction: column;
+            }
+            .main-content {
+                max-width: 100%;
+                padding-bottom: 50px;
+            }
+            .sidebar {
+                position: static;
+                width: 100%;
+                max-width: 100%;
+                margin-top: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="desktop-menu">
+          <a class="underline-fx" href="home.html">Home</a>
+          <a class="underline-fx" href="cards.html">About</a>
+          <a class="underline-fx" href="events.html">Events</a>
+          <a class="underline-fx" href="register.html">Register now</a>
+        </div>
+        
+        <div class="hamburger-icon">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+      </div>
+      
+      <div class="mobile-menu">
+        <div class="mobile-menu-content">
+          <a href="home.html">Home</a>
+          <a href="cards.html">About</a>
+          <a href="events.html">Events</a>
+          <a href="register.html">Register now</a>
+        </div>
+      </div>
+    
+    <div class="background-image"></div>
+
+    <div class="main-content">
+        <div class="container">
+            <header>
+                <h1 class="heading1" style="font-family: 'Kaisei';text-align: left;">Event Registration</h1>
+            </header>
+
+            <section class="registration-section">
+                <div class="event-card syntaxia-card">
+                    <h2 class="event-title syntaxia-title">Syntaxia</h2>
+                    <div class="event-info">
+                        <p>Registration options for Syntaxia:</p>
+                    </div>
+                    <div class="registration-options">
+                        <div class="option-card" data-event="Syntaxia" data-type="Individual" data-price="200">
+                            <div class="option-title">Individual Registration</div>
+                            <div class="option-description">Participate in any one sub-event in Syntaxia</div>
+                            <div class="price">₹200</div>
+                        </div>
+                        <div class="option-card" data-event="Syntaxia" data-type="Gaming Team" data-price="500">
+                            <div class="option-title">Gaming Team Registration</div>
+                            <div class="option-description">Register your team for gaming events in Syntaxia</div>
+                            <div class="price">₹500</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="event-card technophite-card">
+                    <h2 class="event-title technophite-title">Technophite</h2>
+                    <div class="event-info">
+                        <p>Registration options for Technophite:</p>
+                    </div>
+                    <div class="registration-options">
+                        <div class="option-card" data-event="Technophite" data-type="Individual" data-price="200">
+                            <div class="option-title">Individual Registration</div>
+                            <div class="option-description">Participate in any one sub-event in Technophite</div>
+                            <div class="price">₹200</div>
+                        </div>
+                        <div class="option-card" data-event="Technophite" data-type="Gaming Team" data-price="500">
+                            <div class="option-title">Gaming Team Registration</div>
+                            <div class="option-description">Register your team for gaming events in Technophite</div>
+                            <div class="price">₹500</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Registration Form Overlay -->
+            <div class="form-overlay" id="registrationFormOverlay">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2>Registration Form</h2>
+                        <span class="close-form">&times;</span>
+                    </div>
+                    <form id="registrationForm" action="save_registration.php" method="post" enctype="multipart/form-data">
+                        <input type="hidden" id="eventName" name="eventName">
+                        <input type="hidden" id="eventType" name="eventType">
+                        <input type="hidden" id="eventPrice" name="eventPrice">
+                        
+                        <!-- Registration Rules -->
+                        <div class="form-rules" style="background-color: rgba(123, 31, 162, 0.1); padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 4px solid var(--accent);">
+                            <h3 style="margin-bottom: 10px; color: var(--accent);">Registration Rules</h3>
+                            <ol style="margin-left: 20px; line-height: 1.5;">
+                                <li>Make payment using QR or UPI</li>
+                                <li>Save transaction screenshot/ID</li>
+                                <li>Fill the Form with details</li>
+                                <li>Use UPI ID for payments: <strong>eventname@ybl</strong></li>
+                            </ol>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="collegeName">College Name</label>
+                            <input type="text" id="collegeName" name="collegeName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="transactionId">Transaction ID</label>
+                            <input type="text" id="transactionId" name="transactionId" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="transactionScreenshot">Transaction Screenshot</label>
+                            <input type="file" id="transactionScreenshot" name="transactionScreenshot" accept="image/*" required>
+                        </div>
+                        
+                        <div class="form-summary">
+                            <p>Event: <span id="summaryEvent"></span></p>
+                            <p>Registration Type: <span id="summaryType"></span></p>
+                            <p>Amount Paid: ₹<span id="summaryPrice"></span></p>
+                        </div>
+                        
+                        <button type="submit" class="submit-button">Submit Registration</button>
+                    </form>
+                </div>
+            </div>
+
+            <footer>
+                <p>© 2025 Event Organization. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+
+    <div class="sidebar pulse">
+        <h2 class="sidebar-title">Payment & Registration</h2>
+        
+        <div class="sidebar-section">
+            <div class="payment-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">Choose your event & registration type</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">Make payment using QR or UPI</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">Save transaction screenshot/ID</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">Fill the Google Form with details</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h3 class="section-title">Pay via QR Code</h3>
+            <div class="qr-placeholder">
+                QR Code Here
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <h3 class="section-title">UPI Payment</h3>
+            <p>Use this UPI ID in any payment app:</p>
+            <div class="upi-id">eventname@ybl</div>
+        </div>
+
+        <div class="important-note">
+            <div class="note-title">IMPORTANT!</div>
+            <p>Take a screenshot or note your transaction ID after payment. You'll need this for the form.</p>
+        </div>
+
+
+        <div class="sidebar-footer">
+            For support: contact@eventname.com
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.querySelector('.hamburger-icon');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  
+  hamburger.addEventListener('click', function() {
+    this.classList.toggle('change');
+    mobileMenu.classList.toggle('active');
+    
+    // Prevent scrolling when menu is open
+    if (mobileMenu.classList.contains('active')) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  });
+  
+  // Close menu when clicking a link
+  const mobileLinks = document.querySelectorAll('.mobile-menu-content a');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      mobileMenu.classList.remove('active');
+      hamburger.classList.remove('change');
+      document.body.style.overflow = '';
+    });
+  });
+});
+    
+    // Registration form functionality
+    const optionCards = document.querySelectorAll('.option-card');
+    const formOverlay = document.getElementById('registrationFormOverlay');
+    const closeForm = document.querySelector('.close-form');
+    
+    // Open form when clicking on an option card
+    optionCards.forEach(card => {
+      card.addEventListener('click', function() {
+        // Get data attributes
+        const event = this.getAttribute('data-event');
+        const type = this.getAttribute('data-type');
+        const price = this.getAttribute('data-price');
+        
+        // Set form hidden fields
+        document.getElementById('eventName').value = event;
+        document.getElementById('eventType').value = type;
+        document.getElementById('eventPrice').value = price;
+        
+        // Update summary
+        document.getElementById('summaryEvent').textContent = event;
+        document.getElementById('summaryType').textContent = type;
+        document.getElementById('summaryPrice').textContent = price;
+        
+        // Show form overlay
+        formOverlay.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+      });
+    });
+    
+    // Close form when clicking the X
+    closeForm.addEventListener('click', function() {
+      formOverlay.style.display = 'none';
+      document.body.style.overflow = ''; // Restore scrolling
+    });
+    
+    // Close form when clicking outside the form
+    formOverlay.addEventListener('click', function(e) {
+      if (e.target === formOverlay) {
+        formOverlay.style.display = 'none';
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+    });
+
+    </script>
+</body>
+</html>

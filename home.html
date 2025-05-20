@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Landing Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('bg pattern 2.png'); 
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+    }
+
+    .navbar {
+    display: flex;
+    justify-content: center;
+    font-family: 'Itim', sans-serif;
+    gap: 15px;
+    padding: 14px 28px;
+    background: rgb(0, 0, 0);
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    z-index: 1000;
+  }
+
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 16px;
+    transition: all 0.3s;
+  }
+
+  .navbar a:hover {
+    color: rgb(33, 33, 152);
+  }
+
+  /* Hamburger menu icon */
+  .hamburger-icon {
+    display: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .bar1, .bar2, .bar3 {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    transition: 0.4s;
+  }
+
+  /* Rotate hamburger icon when active */
+  .change .bar1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .change .bar2 {
+    opacity: 0;
+  }
+
+  .change .bar3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-menu.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  .mobile-menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .mobile-menu-content a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    margin: 15px 0;
+    padding: 10px;
+    transition: all 0.3s;
+  }
+
+  .mobile-menu-content a:hover {
+    color: rgb(33, 33, 152);
+  }
+
+  /* Media queries */
+  @media (max-width: 768px) {
+    .navbar a {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .desktop-menu {
+      display: none;
+    }
+    
+    .hamburger-icon {
+      display: block;
+    }
+
+    .navbar {
+      justify-content: center;
+      gap: 10px;
+      padding: 8px 15px;
+      left: 12%;
+    }
+  }
+
+    /* Landing content */
+
+
+    /* Responsive Gallery Section */
+
+    /* Underline Effect */
+    .underline-fx {
+      color: darkblue;
+      text-decoration: none;
+      background-image: linear-gradient(to right, darkblue 50%, rgb(0, 0, 0) 50%);
+      background-size: 200% 3px;
+      background-repeat: no-repeat;
+      background-position: 100% 100%;
+      transition: background-position .3s;
+    }
+
+    .underline-fx:hover {
+      background-position: 0% 100%;
+    }
+
+
+    .event-container {
+      width: 60%;
+      max-width: 1200px;
+      min-height: 411px; /* Set a minimum height */
+      margin: 50px auto;
+      display: flex;
+      font-family: 'Itim', sans-serif;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(96.3deg, rgba(120, 7, 114, 0.07) 23.12%, rgba(6, 18, 248, 0.07) 92.65%);
+      border: 1px solid #FCA4A4;
+      border-radius: 12px;
+      backdrop-filter: blur(6.15px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Event Image */
+    .event-image-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .event-image {
+  width: 49%; /* Adjust the width as needed */
+  height: 268px; /* Set an explicit height */
+  border-radius: 12px;
+  background: url('https://cdn.pixabay.com/photo/2016/11/28/21/20/woman-1866081_1280.jpg') center/cover no-repeat; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-left: 5%;
+}
+
+    /* Event Details */
+    .event-details {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .event-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #bc7474;
+      margin-bottom: 15px;
+    }
+
+    .event-description {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+      max-height: 100px;
+      margin-bottom: 20px;
+    }
+
+    .event-brochure {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #FC2D2D;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+
+    .event-button {
+      padding: 10px 20px;
+      background: #78B3FF;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .event-button:hover {
+      background: #568fd7;
+    }
+
+    /* Arrows */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: #333;
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.3s;
+    }
+
+    .arrow:hover {
+      color: #FC2D2D;
+    }
+
+    .arrow-left {
+      left: 10px;
+    }
+
+    .arrow-right {
+      right: -20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .event-container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .event-image-container,
+      .event-details {
+        padding: 20px;
+      }
+
+      .event-image {
+        width: 100%;
+      }
+
+      .arrow {
+        display: none; /* Hide arrows for smaller screens */
+      }
+    }
+    .register-container {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      position: relative;
+      width: 100%;
+      background-color: #e74c3c;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+      margin-bottom: 50px;
+    }
+
+    /* Button */
+    .register-button {
+      position: absolute;
+      top: 50%; 
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 12px 24px;
+      font-size: 18px;
+      color: #ffffff;
+      background-color: rgb(8, 0, 0);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: scout-sans-semicond-bold, ui-sans-serif, system-ui, sans-serif;
+      transition: all 0.3s ease;
+      z-index: 10;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .register-button:hover {
+      background-color: #3d3433;
+      transform: translate(-50%, -50%) scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Scrolling Text Container */
+    .scrolling-text-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Scrolling Text Animation */
+    @keyframes scroll {
+      0% {
+        transform: translateX(0%);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .scrolling-wrapper {
+      display: flex;
+      width: 200%;
+      white-space: nowrap;
+    }
+
+    .scrolling-text {
+      display: flex;
+      width: 100%;
+      white-space: nowrap;
+      animation: scroll 20s linear infinite;
+    }
+
+    .text-item {
+      display: inline-block;
+      font-size: 80px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-right: 60px; /* Gap between text items */
+      letter-spacing: 2px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .register-button {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+
+      .text-item {
+        font-size: 60px;
+        margin-right: 40px; /* Adjusted gap for tablets */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .register-container {
+        height: 80px; /* Reduced height for mobile */
+      }
+
+      .register-button {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+
+      .text-item {
+        font-size: 40px; /* Smaller font size for mobile */
+        margin-right: 30px; /* Smaller gap for mobile */
+      }
+      
+      /* Ensure text is properly centered vertically */
+      .scrolling-text-container {
+        justify-content: center;
+      }
+    }
+
+/*footer*/
+
+:root {
+        --github-dark: #0d1117;
+        --github-border: #30363d;
+        --github-text: #c9d1d9;
+        --github-link: #58a6ff;
+        --gradient-start: rgba(13, 17, 23, 0);
+        --gradient-end: rgba(13, 17, 23, 1);
+    }
+    
+    .footer {
+        background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+        color: #fff;
+        padding: 40px 0 20px;
+        border-radius: 6px 6px 0 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    }
+    
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    .footer-column {
+        flex: 1;
+        min-width: 250px;
+        margin-bottom: 30px;
+        padding: 0 15px;
+    }
+    
+    .footer-column h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    
+    .footer-column h3:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 30px;
+        height: 2px;
+        background: var(--github-link);
+    }
+    
+    .footer-column ul {
+        list-style: none;
+    }
+    
+    .footer-column ul li {
+        margin-bottom: 12px;
+    }
+    
+    .footer-column ul li a {
+        color: var(--github-text);
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    
+    .footer-column ul li a:hover {
+        color: var(--github-link);
+        text-decoration: underline;
+    }
+    
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+    
+    .contact-item i {
+        margin-right: 10px;
+        font-size: 16px;
+        color: var(--github-link);
+    }
+    
+    .developer-box {
+        background-color: var(--github-dark);
+        border: 1px solid var(--github-border);
+        border-radius: 6px;
+        padding: 15px;
+        margin-top: 10px;
+    }
+    
+    .developer-box h4 {
+        color: var(--github-text);
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+    
+    .developer-box p {
+        color: var(--github-text);
+        font-size: 12px;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+    
+    .social-links {
+        display: flex;
+        margin-top: 15px;
+    }
+    
+    .social-links a {
+        color: var(--github-text);
+        margin-right: 15px;
+        font-size: 16px;
+        transition: color 0.3s;
+    }
+    
+    .social-links a:hover {
+        color: var(--github-link);
+    }
+    
+    @media screen and (max-width: 768px) {
+        .footer-container {
+            flex-direction: column;
+        }
+        
+        .footer-column {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+    }
+
+/* Footer Styles end */
+
+
+/* Scrolling Animation */
+@keyframes scroll-text {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
+
+/* Create the animation */
+@keyframes move {
+  to { transform: translateX(-100%); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .event-container {
+        flex-direction: column;
+    }
+
+    .event-image {
+        max-width: 100%;
+        height: 200px;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .event-details {
+        align-items: center;
+        text-align: center;
+    }
+
+    .event-title {
+        font-size: 2rem;
+    }
+
+    .event-description {
+        font-size: 0.9rem;
+    }
+
+    .event-button {
+        font-size: 0.9rem;
+    }
+
+    .event-brochure {
+        font-size: 0.9rem;
+    }
+}
+    
+
+    /* Circular Text Container */
+    .clrcontainer {
+      display: block;
+      width: 100%;
+      position: relative;
+    }
+
+    .circular-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 200px;
+      height: 200px;
+      position: fixed;
+      top: calc(100vh - 200px);
+      right: 0;
+    }
+
+    .text {
+      font-family: "Fira Code";
+      font-weight: 700;
+      font-size: 100%;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .arrow {
+      display: block;
+      width: 50px;
+      height: 50px;
+      position: absolute;
+    }
+
+    .arrow svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      fill: #333333;
+    }
+
+
+    /* Responsive Styles */
+
+
+    
+h2 {
+  font-weight: 500;
+  text-align: center;
+  font-size: var(--m);
+  margin: 0;
+}
+
+h3 {
+  font-weight: 500;
+  font-size: calc(0.6 * var(--m));
+  margin: 0;
+}
+
+.card {
+  height: calc(8 * var(--m));
+  width: calc(12 * var(--m));
+  background: linear-gradient(120deg, #ff8064, #725bdc);
+  color: black;
+  border-radius: calc(0.5 * var(--m));
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--m);
+
+  position: fixed;
+  margin: calc(2 * var(--m)) calc(5 * var(--m)) calc(5 * var(--m))
+    calc(5 * var(--m));
+}
+
+button {
+  background-color: #000;
+  font-size: calc(0.4 * var(--m));
+  border: none;
+  color: #e5e5e5;
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  padding: calc(0.35 * var(--m)) calc(0.8 * var(--m));
+  border-radius: calc(0.3 * var(--m));
+}
+
+
+    /* Import Font Awesome for icons */
+  /* Import Font Awesome for icons */
+  /* Import Font Awesome for icons */
+  /* Import Font Awesome for icons */
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    margin-top: 101px;
+}
+    
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
+}
+
+.content-section {
+    flex: 1;
+    min-width: 280px;
+    text-align: center;
+}
+
+/* Image section */
+.image-section {
+    flex: 1;
+    min-width: 280px;
+    min-height: 450px;
+    display: flex;
+    justify-content: center;
+    background-image: url('syntaxia2.png');
+    background-size: contain; /* Ensures the entire image fits */
+    background-position: center; /* Centers the image in case of extra space */
+    background-repeat: no-repeat; /* Prevents tiling */
+    align-items: center;
+}
+
+.heading1 {
+      font-size: 4rem;
+      color: white;
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.8s ease-out;
+      text-align: left;
+      font-weight: 700;
+      margin-top: 5%;
+      font-family: 'Kaisei', serif;
+      position: relative;
+      display: inline-block;
+    }
+
+    .highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    .highlight::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 100%;
+      height: 10px;
+      background: transparent;
+      border-bottom: 3px solid #f5811b;
+      border-radius: 50% 50% 0 0 / 10px;
+      transform: translateY(5px);
+      opacity: 0.6;
+    }
+
+    .highlight::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 10px;
+      background: #f5811b;
+      border-radius: 50% 50% 0 0 / 10px;
+      transform: translateY(5px);
+      opacity: 0.8;
+      animation: fillUnderline 2s ease forwards;
+    }
+
+    @keyframes fillUnderline {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+
+.subheading {
+    text-align: left;
+    font-size: 1.1rem;
+    color: #a19d9d;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    animation: fadeInUp 1s ease-out;
+}
+
+.buttons {
+    display: flex;
+    gap: 6rem;
+    margin-bottom: 2.5rem;
+    animation: fadeInUp 1.2s ease-out;
+    justify-content: center;
+}
+
+.btn {
+    padding: 0.8rem 3.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background-color: #ffffff;
+    color: rgb(1, 0, 0);
+}
+
+.btn-primary:hover {
+    color: blue;
+    transform: translateY(-3px);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+.btn-outline:hover {
+    background-color: #4a6cf7;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.features-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0.75rem; /* Decreased padding */
+    margin-bottom: 1rem; /* Decreased margin */
+    animation: fadeInUp 1.4s ease-out;
+    width: 80%; /* Optional: you can control the width here */
+}
+
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+}
+
+.feature {
+    flex: 0 0 auto;
+    width: 65px; /* Reduced from 80px */
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+}
+
+.icon {
+    font-size: 1.2rem; /* Reduced from 1.5rem */
+    margin-bottom: 0.4rem;
+    color: #95a2d5;
+}
+
+.feature-title {
+    font-size: 0.7rem; /* Reduced from 0.8rem */
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+    color: #f0f0f0; /* Changed from "whitesmoke" for consistency */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .heading1 {
+        font-size: 1.8rem;
+    }
+    
+    .subheading {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .features {
+        gap: 1.25rem;
+    }
+    
+    .flex-container {
+        flex-direction: column-reverse;
+        gap: 1.5rem;
+    }
+    
+    .image-section {
+        width: 100%;
+        min-height: 250px;
+    }
+    
+    .container {
+        margin-top: 80px;
+        height: auto;
+        padding: 0 1rem;
+    }
+}
+@media(max-width: 768px) {
+    .circular-text {
+        display: none;
+    }
+}
+@media(max-width:576px){
+    .circular-text {
+        display: none;
+    }
+}
+@media (max-width: 576px) {
+    .buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.8rem;
+        margin-bottom: 2rem;
+    }
+    
+    .btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.7rem 1.2rem;
+    }
+    
+    .features {
+        gap: 0.8rem;
+    }
+    
+    .feature {
+        width: 55px; /* Even smaller on very small screens */
+    }
+    
+    .icon {
+        font-size: 1rem;
+    }
+    
+    .feature-title {
+        font-size: 0.65rem;
+    }
+    
+    .features-container {
+        padding: 0.75rem;
+        display: none;
+    }
+    
+    .heading1 {
+        font-size: 2.6rem;
+    }
+    
+    .image-section {
+        min-height: 290px;
+    }
+    
+    .content-section {
+        min-width: 250px;
+    }
+}
+
+@media (max-width: 400px) {
+    .feature {
+        width: 45px; /* Further reduced for very small phones */
+    }
+    
+    .features {
+        gap: 0.6rem;
+    }
+}
+  
+  /* For mobile responsiveness */
+
+  /* Responsive adjustments */
+
+
+
+
+  .top-events-heading {
+    margin-left: 20%;
+    font-size: 300%;
+}
+
+@media (max-width: 576px) {
+    .top-events-heading {
+        margin-left: 79px;
+        font-size: 203%;
+    }
+}
+
+
+img {
+  height: calc(0.3 * var(--m));
+  object-fit: cover;
+}
+
+.social {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link {
+  width: calc(0.8 * var(--m));
+  height: calc(0.8 * var(--m));
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: calc(0.1 * var(--m));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 1000px) {
+  :root {
+    --m: 3rem;
+  }
+}
+
+.logo {
+    position: fixed;
+    top: 17px;
+    left: 17px;
+    height: 69px;
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    border-radius: 8px;
+    width: 204px;
+}
+
+
+  </style>
+</head>
+<body>
+  <!-- Background Image -->
+  <div class="background-image"></div>
+
+  
+  <!-- SJU Logo -->
+  <a href="https://www.sju.edu.in/" class="logo">
+    <img src="https://www.sju.edu.in/images/logo.webp" alt="SJU Logo" style="height: 50px;">
+  </a>
+
+
+
+  <!-- Centered Navbar -->
+  <div class="navbar">
+    <div class="desktop-menu">
+      <a class="underline-fx" href="home.html">Home</a>
+      <a class="underline-fx" href="cards.html">About</a>
+      <a class="underline-fx" href="events.html">Events</a>
+      <a class="underline-fx" href="register.html">Register now</a>
+    </div>
+    
+    <div class="hamburger-icon">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+  </div>
+  
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <a href="home.html">Home</a>
+      <a href="cards.html">About</a>
+      <a href="events.html">Events</a>
+      <a href="register.html">Register now</a>
+    </div>
+  </div>
+
+  <!-- Landing Content -->
+  <div class="container">
+    <div class="flex-container">
+<div class="content-section">
+  
+<h1 class="heading1" style="font-family: 'Kaisei';text-align: left;"> <span class="highlight">Syntaxia</span>, where ideas explode into action</h1>
+
+  
+<p class="subheading" style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);font-family: 'Itim', sans-serif;">
+  An inter-collegiate fest “SYNTAXIA” is organized by the first and second year post graduate students. The fest included both on-stage as well as off-stage events that helped students to showcase their skills and their talents.
+  </p>
+        <div class="buttons">
+          <button class="btn btn-primary">Register</button>
+          <button class="btn btn-outline">Explore Events</button>
+        </div>
+        
+        <!-- Features Section -->
+        <!--  
+        <div class="features-container">
+          <div class="features">
+            <div class="feature">
+              <div class="icon">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <div class="feature-title">Fast Performance</div>
+            </div>
+            
+            <div class="feature">
+              <div class="icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <div class="feature-title">High Security</div>
+            </div>
+            
+            <div class="feature">
+              <div class="icon">
+                <i class="fas fa-cog"></i>
+              </div>
+              <div class="feature-title">Easy Setup</div>
+            </div>
+            
+            <div class="feature">
+              <div class="icon">
+                <i class="fas fa-headset"></i>
+              </div>
+              <div class="feature-title">24/7 Support</div>
+            </div>
+          </div>
+        </div>
+      -->
+      </div>
+      
+      <div class="image-section">
+        <!-- Background image is set in CSS -->
+      </div>
+    </div>
+</div>
+  
+<h1 class="top-events-heading" style="font-family:'Kaisei HarunoUmi'; text-align: left; color: #f0f0f0;">Our Top <span style="border-bottom: 3px solid red;">Events</span></h1>
+
+  <div class="event-container">
+    <div class="arrow arrow-left">&#10094;</div>
+
+     <!-- Event Image -->
+      <div class="event-image"></div>
+
+      <!-- Event Details -->
+      <div class="event-details">
+        <h1 class="event-title"> </h1>
+        <p class="event-description">
+        </p>
+        <p class="event-brochure">Brochure</p>
+        <button class="event-button" >REGISTER</button>
+      </div>
+
+    <div class="arrow arrow-right">&#10095;</div>
+  
+  </div>
+
+  <div class="register-container">
+    <div class="scrolling-text-container">
+      <div class="scrolling-wrapper">
+        <div class="scrolling-text">
+          <div class="text-item">REGISTER</div>
+          <div class="text-item">REGISTER</div>
+          <div class="text-item">REGISTER</div>
+        </div>
+        <div class="scrolling-text" aria-hidden="true">
+          <div class="text-item">REGISTER</div>
+          <div class="text-item">REGISTER</div>
+          <div class="text-item">REGISTER</div>
+        </div>
+      </div>
+    </div>
+    <button class="register-button">Register Now</button>
+  </div>
+
+
+
+  
+    
+<!-- Footer-->
+<footer class="footer">
+  <div class="footer-container">
+      <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul>
+              <li><a href="home.html">Home</a></li>
+              <li><a href="events.html">Events</a></li>
+              <li><a href="cards.html">About</a></li>
+              <li><a href="register.html">Registration</a></li>
+              <li><a href="">Schedule</a></li>
+          </ul>
+      </div>
+      
+      <div class="footer-column">
+          <h3>Contact Us</h3>
+          <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <p>St Joseph college</p>
+          </div>
+          <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <p>+91 8963167793 (Event Head)</p>
+          </div>
+          <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <p>synaxia@gmail</p>
+          </div>
+          <div class="contact-item">
+              <i class="fas fa-clock"></i>
+              <p>Mon-Fri: 9:00 AM - 5:00 PM</p>
+          </div>
+      </div>
+      
+      <div class="footer-column">
+          <h3>Developer Info</h3>
+          <div class="developer-box">
+              <h4>Developed with ❤️ by:</h4>
+              <p>GitHub: @your-username</p>
+              <p>Last updated: March 2025</p>
+              <div class="social-links">
+                  <a href="#"><i class="fab fa-github"></i></a>
+                  <a href="#"><i class="fab fa-linkedin"></i></a>
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
+
+
+  <!-- Circular Text Section -->
+  <div class="clrcontainer">
+    <div class="circular-text">
+      <p class="text">SYNTAXIA • 2025 • ST JOSEPH UNIVERSITY • </p>
+      <div class="arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512.568 512.568" style="enable-background:new 0 0 512.568 512.568;" xml:space="preserve" width="512" height="512">
+          <path d="M184.284,235.284h140v40h-140V235.284z M275.284,436V315.284h-40V436l-53.858-53.858l-28.284,28.285l102.142,102.142  l105.142-105.142l-28.284-28.285L275.284,436z M235.284,76.568v118.716h40V76.568l56.858,56.858l28.284-28.284L255.284,0  L152.142,103.142l28.284,28.284L235.284,76.568z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/circletype@2.2.0/dist/circletype.min.js"></script>
+
+  <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+      // Optional: You could add a pause on hover functionality here
+      const scrollingText = document.querySelectorAll('.scrolling-text');
+      
+      // Pause animation on hover (uncomment if you want this feature)
+      /*
+      document.querySelector('.scrolling-text-container').addEventListener('mouseenter', function() {
+        scrollingText.forEach(item => {
+          item.style.animationPlayState = 'paused';
+        });
+      });
+      
+      document.querySelector('.scrolling-text-container').addEventListener('mouseleave', function() {
+        scrollingText.forEach(item => {
+          item.style.animationPlayState = 'running';
+        });
+      });
+      */
+    });
+
+
+
+
+
+
+
+
+<!-- Optional: To add data attributes to your existing cards -->
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger-icon');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    hamburger.addEventListener('click', function() {
+      this.classList.toggle('change');
+      mobileMenu.classList.toggle('active');
+      
+      // Prevent scrolling when menu is open
+      if (mobileMenu.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    });
+    
+    // Close menu when clicking a link
+    const mobileLinks = document.querySelectorAll('.mobile-menu-content a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('active');
+        hamburger.classList.remove('change');
+        document.body.style.overflow = '';
+      });
+    });
+  });
+
+
+
+   
+
+
+
+    // Event Data
+const events = [
+    {
+        title: "Treasaure Hunt",
+        description:
+            "Whether you're a coding master or a rising star in the programming world, this competition is your chance to prove it. Showcase your problem-solving abilities and emerge as the top performer! ",
+        image: "https://cdn.prod.website-files.com/620e4101b2ce12a1a6bff0e8/65e80f722774b7ae68fbecdb_samantha-gades-fIHozNWfcvs-unsplash%20(1).jpg",
+    },
+    {
+        title: "Hackathon",
+        description:
+            "Collaborate with tech enthusiasts, tackle real-world problems, and build innovative solutions in an adrenaline-filled coding event.",
+        image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjCyiUylpDYxTkqBCBjGg2J7fIyIeupACcXW9Lmth3iPLCIEajyHEu8CBCYn26wMPmiRq8XUhpzRAWHqp9fRcpDgVVHg10seO3v7QV36wPJ_upW0aA02VKwFWzx7h-5BvYbkRuD6uf_wiKyjiBbCPiDbNt3ugsneW6Z7VF4V_C2V8YcKx0KcqLG8qK7jw/s2048/2.%20Grand%20Finale%20SHI.jpg",
+    },
+    {
+        title: "Cultural Night",
+        description:
+            "Immerse yourself in a vibrant evening of music, dance, and performances celebrating diversity and creativity.",
+        image: "https://cdn.pixabay.com/photo/2023/04/03/12/59/crowd-7896788_960_720.jpg",
+    },
+];
+
+// DOM Elements
+const eventImage = document.querySelector(".event-image");
+const eventTitle = document.querySelector(".event-title");
+const eventDescription = document.querySelector(".event-description");
+const leftArrow = document.querySelector(".arrow-left");
+const rightArrow = document.querySelector(".arrow-right");
+
+let currentIndex = 0;
+
+// Function to Update Event
+function updateEvent(index) {
+    const event = events[index];
+    eventImage.style.backgroundImage = `url('${event.image}')`;
+    eventTitle.textContent = event.title;
+    eventDescription.textContent = event.description;
+}
+
+// Event Listeners for Arrows
+leftArrow.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + events.length) % events.length; // Loop backward
+    updateEvent(currentIndex);
+});
+
+rightArrow.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % events.length; // Loop forward
+    updateEvent(currentIndex);
+});
+
+// Initialize First Event
+updateEvent(currentIndex);
+
+  //CIRCULAR TEXT
+    const text = document.querySelector(".circular-text .text");
+
+    const rotate = new CircleType(text).radius(65);
+
+    window.addEventListener("scroll", function() {
+      text.style.transform = `rotate(${window.scrollY * 0.15}deg)`;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration Stats</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2196F3;
+            --background-color: #f4f4f4;
+            --text-color: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fade-in 0.5s ease-out;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            position: relative;
+            font-size: 2.5em;
+            animation: slide-down 0.7s ease-out;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--secondary-color);
+        }
+
+        #event-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #event-table th, #event-table td {
+            padding: 12px 15px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        #event-table th {
+            background-color: var(--primary-color);
+            color: white;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        #event-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        #event-table tr:hover {
+            background-color: #e9ecef;
+            transform: scale(1.01);
+        }
+
+        #event-table td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading i {
+            font-size: 2em;
+            margin-right: 10px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slide-down {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            #event-table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Event Registration Statistics</h1>
+        <div id="loading" class="loading">
+            <i class="fas fa-spinner"></i>
+            Loading event data...
+        </div>
+        <table id="event-table">
+            <thead>
+                <tr>
+                    <th>Event Name</th>
+                    <th>Total Registrations</th>
+                    <th>Total Money Received (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="event-data">
+                <!-- Data will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingElement = document.getElementById('loading');
+            const eventDataBody = document.getElementById('event-data');
+
+            // Fetch event data from the PHP script
+            fetch('fetch_event_data.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Hide loading
+                    loadingElement.style.display = 'none';
+
+                    // Populate table
+                    data.forEach((row, index) => {
+                        const tr = document.createElement('tr');
+                        tr.style.animation = `fade-in 0.5s ease-out ${index * 0.1}s forwards`;
+                        tr.style.opacity = 0;
+                        
+                        tr.innerHTML = `
+                            <td>${row.event_name}</td>
+                            <td>${row.total_registrations}</td>
+                            <td>₹${parseFloat(row.total_money).toLocaleString('en-IN')}</td>
+                        `;
+                        
+                        eventDataBody.appendChild(tr);
+                        
+                        // Trigger animation
+                        setTimeout(() => {
+                            tr.style.animation = 'none';
+                            tr.style.opacity = 1;
+                        }, (index * 0.1 + 0.5) * 1000);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    loadingElement.innerHTML = `
+                        <i class="fas fa-exclamation-triangle" style="color: red;"></i>
+                        Error loading data. Please try again later.
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>

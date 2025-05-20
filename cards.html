@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Team - About Us</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('bg pattern 2.png'); /* Replace with your image URL */
+      background-size: cover;
+      background-position: center;
+      z-index: -1; /* Keeps it behind other elements */
+    }
+    
+    body {
+      background-color: #000;
+      color: #fff;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      margin-top: 46px;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      color: #fff;
+    }
+    
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 30px;
+      justify-content: center;
+    }
+    
+    .team-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 380px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .team-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+    }
+
+    /* Holographic Effect */
+    .team-card .holographic-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column; /* Ensures image is at the top */
+      justify-content: flex-start; /* Align items to the top */
+      background: #111;
+      overflow: hidden;
+      border-radius: 10px;
+      transition: all 0.5s ease;
+    }
+
+    .team-card .holographic-card h2 {
+      color: #0ff;
+      font-size: 1.5rem;
+      position: relative;
+      z-index: 2;
+      margin-top: 15px;
+    }
+
+    .team-card .holographic-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(0deg, transparent, transparent 30%, rgba(0, 255, 255, 0.3));
+      transform: rotate(-45deg);
+      transition: all 0.5s ease;
+      opacity: 0;
+    }
+
+    .team-card:hover .holographic-card {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    }
+
+    .team-card:hover .holographic-card::before {
+      opacity: 1;
+      transform: rotate(-45deg) translateY(100%);
+    }
+
+    .card-img {
+      height: 250px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top; /* This positions the image to show the top part (face) */
+      transition: transform 0.5s ease;
+    }
+    
+    .team-card:hover .card-img img {
+      transform: scale(1.05);
+    }
+    
+    .card-content {
+      padding: 12px; /* Reduced from 20px */
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .name {
+      font-size: 1rem; /* Reduced from 1.2rem */
+      font-weight: 600;
+      margin-bottom: 3px; /* Reduced from 5px */
+      color: #fff;
+    }
+    
+    .role {
+      font-size: 0.8rem; /* Reduced from 0.9rem */
+      color: #64ffda;
+      font-weight: 500;
+      margin-bottom: 6px; /* Reduced from 10px */
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 12px; /* Reduced from 15px */
+      margin-top: 6px; /* Reduced from 10px */
+    }
+    
+    .social-links a {
+      color: #fff;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      color: #64ffda;
+    }
+    /* Centered Navbar styles */
+.navbar {
+  display: flex;
+  justify-content: center;
+  font-family: 'Itim', sans-serif;
+  gap: 15px;
+  padding: 14px 28px;
+  background: rgb(0, 0, 0);
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 20px;
+  z-index: 1000;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 8px 16px;
+  transition: all 0.3s;
+}
+
+.navbar a:hover {
+  color: rgb(33, 33, 152);
+}
+
+/* Hamburger menu icon */
+.hamburger-icon {
+  display: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.bar1, .bar2, .bar3 {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+/* Rotate hamburger icon when active */
+.change .bar1 {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.change .bar2 {
+  opacity: 0;
+}
+
+.change .bar3 {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Mobile menu */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu.active {
+  display: flex;
+  opacity: 1;
+}
+
+.mobile-menu-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.mobile-menu-content a {
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+  margin: 15px 0;
+  padding: 10px;
+  transition: all 0.3s;
+}
+
+.mobile-menu-content a:hover {
+  color: rgb(33, 33, 152);
+}
+
+/* Media queries for navbar */
+@media (max-width: 768px) {
+  .navbar a {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .desktop-menu {
+    display: none;
+  }
+  
+  .hamburger-icon {
+    display: block;
+  }
+
+  .navbar {
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 15px;
+    left: 12%;
+  }
+}
+
+/* Underline Effect for navbar links */
+.underline-fx {
+  color: darkblue;
+  text-decoration: none;
+  background-image: linear-gradient(to right, darkblue 50%, rgb(0, 0, 0) 50%);
+  background-size: 200% 3px;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  transition: background-position .3s;
+}
+
+.underline-fx:hover {
+  background-position: 0% 100%;
+}
+    
+    @media (max-width: 768px) {
+      .team-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 20px;
+      }
+      
+      .team-card {
+        height: 330px;
+      }
+      
+      .card-img {
+        height: 200px;
+      }
+      
+      .card-content {
+        padding: 15px;
+      }
+      
+      .name {
+        font-size: 1rem;
+      }
+      
+      .role {
+        font-size: 0.8rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .team-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+      }
+      
+      .team-card {
+        height: 300px;
+      }
+      
+      .card-img {
+        height: 180px;
+      }
+      
+      .card-content {
+        padding: 12px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="background-image"></div>
+
+
+  <!-- Centered Navbar -->
+<div class="navbar">
+  <div class="desktop-menu">
+    <a class="underline-fx" href="home.html">Home</a>
+    <a class="underline-fx" href="cards.html">About</a>
+    <a class="underline-fx" href="events.html">Events</a>
+    <a class="underline-fx" href="register.html">Register now</a>
+  </div>
+  
+  <div class="hamburger-icon">
+    <div class="bar1"></div>
+    <div class="bar2"></div>
+    <div class="bar3"></div>
+  </div>
+</div>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu">
+  <div class="mobile-menu-content">
+    <a href="home.html">Home</a>
+    <a href="cards.html">About</a>
+    <a href="events.html">Events</a>
+    <a href="register.html">Register now</a>
+  </div>
+</div>
+  <div class="container">
+    <h1 style="font-family: 'Kaisei';text-align: left;">Our Team</h1>
+    
+    <div class="team-grid">
+      <!-- Event Director -->
+      <div class="team-card">
+        <div class="holographic-card">
+          <div class="card-img">
+            <img src="https://syntaxia.sju.edu.in/images/team/naseef.webp" alt="Event Director">
+          </div>
+          <div class="card-content">
+            <div>
+              <div style="font-size: largetext; text-align: center;" class="role">
+                PR Head</div>
+              <div  style="text-align: center;" class="name">Naseef</div>
+            </div>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Vice President -->
+      <div class="team-card">
+        <div class="holographic-card">
+          <div class="card-img">
+            <img src="https://syntaxia.sju.edu.in/images/team/shashank.webp" alt="Vice President">
+          </div>
+          <div class="card-content">
+            <div>
+              <div style="font-size: large;text-align: center;" class="role">
+                Vice President</div>
+              <div  style="text-align: center;" class="name">Shashan</div>
+            </div>
+
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- IT Head -->
+      <div class="team-card">
+        <div class="holographic-card">
+          <div class="card-img">
+            <img src="https://syntaxia.sju.edu.in/images/team/zaidh.webp" alt="IT Head">
+          </div>
+          <div class="card-content">
+            <div>
+              <div style="font-size: large;text-align: center;" class="role">
+                Logistics Head</div>
+              <div  style="text-align: center;" class="name">Zaidh</div>
+            </div>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-github"></i></a>
+              <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Design Head -->
+      <div class="team-card">
+        <div class="holographic-card">
+          <div class="card-img">
+            
+
+            <img src="https://syntaxia.sju.edu.in/images/team/vishnu.webp" alt="Design Head">
+          </div>
+          <div class="card-content">
+            <div>
+              <div style="font-size: large;text-align: center;" class="role">
+                Design Head</div>
+              <div  style="text-align: center;" class="name">Vishnu</div>
+            </div>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Logistics Head -->
+      <div class="team-card">
+        <div class="holographic-card">
+          <div class="card-img">
+            <img src="https://media.istockphoto.com/id/1303206558/photo/headshot-portrait-of-smiling-businessman-talk-on-video-call.jpg?s=612x612&w=0&k=20&c=hMJhVHKeTIznZgOKhtlPQEdZqb0lJ5Nekz1A9f8sPV8=" alt="Logistics Head">
+          </div>
+          <div class="card-content">
+            <div>
+              <div style="font-size: large;text-align: center;" class="role">
+                Logistics Head</div>
+              <div  style="text-align: center;" class="name">Casey Morgan </div>
+            </div>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Marketing Head -->
+      <div class="team-card">
+        <div class="holographic-card">
+          <div class="card-img">
+ 
+            <img src="https://media.istockphoto.com/id/1388253782/photo/positive-successful-millennial-business-professional-man-head-shot-portrait.jpg?s=612x612&w=0&k=20&c=uS4knmZ88zNA_OjNaE_JCRuq9qn3ycgtHKDKdJSnGdY=" alt="Marketing Head">
+          </div>
+          <div class="card-content">
+            <div>
+              <div style="font-size: large;text-align: center;" class="role">
+                Design Head</div>
+              <div style="text-align: center;" class="name">Jordan Lee</div>
+            </div>
+            <div style="align-items: center;" class="social-links">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.querySelector('.hamburger-icon');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  
+  hamburger.addEventListener('click', function() {
+    this.classList.toggle('change');
+    mobileMenu.classList.toggle('active');
+    
+    // Prevent scrolling when menu is open
+    if (mobileMenu.classList.contains('active')) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  });
+  
+  // Close menu when clicking a link
+  const mobileLinks = document.querySelectorAll('.mobile-menu-content a');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      mobileMenu.classList.remove('active');
+      hamburger.classList.remove('change');
+      document.body.style.overflow = '';
+    });
+  });
+});
+</script>
+</html>
